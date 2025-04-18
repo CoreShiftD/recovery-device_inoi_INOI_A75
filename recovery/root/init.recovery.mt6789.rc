@@ -1,6 +1,6 @@
 import /init.tee.rc
 import /init.custom.rc
-import /init.vibrator.rc
+import /init.device.rc
 
 on init
     setprop sys.usb.configfs 1
