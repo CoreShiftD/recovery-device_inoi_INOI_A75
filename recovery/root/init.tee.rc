@@ -60,6 +60,11 @@ on init
     #create mountpoint for /mnt/vendor/persist partition
     mkdir /mnt/vendor/persist 0771 system system
 
+on boot
+ #Added Manual For Trustonic
+    mkdir /mnt/vendor/persist
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
+
 on post-fs
     chown system system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist

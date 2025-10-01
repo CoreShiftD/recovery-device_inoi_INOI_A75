@@ -1,5 +1,4 @@
 import /init.tee.rc
-import /init.custom.rc
 import /init.device.rc
 import /init.vibrator.rc
 
