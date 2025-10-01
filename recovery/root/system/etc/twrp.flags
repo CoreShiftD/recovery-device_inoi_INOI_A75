@@ -12,12 +12,12 @@
 
 # Firmware
 /dtbo			emmc		/dev/block/by-name/dtbo											flags=display=dtbo;slotselect;backup
-/metadata		ext4		/dev/block/by-name/metadata										flags=display=metadata;backup
+/metadata		ext4		/dev/block/by-name/metadata										flags=display=metadata;backup;flashimg
 /misc			emmc		/dev/block/by-name/misc											flags=display=misc;backup
 
 # Sensitive Data
 /nvcfg			ext4		/dev/block/by-name/nvcfg										flags=display=nvcfg;backup
-/persist_image		emmc		/dev/block/by-name/persist										flags=display=persist;backup
+/persist_image		emmc		/dev/block/by-name/persist										flags=display=persist;backup;flashimg
 /persistent		emmc		/dev/block/by-name/frp											flags=display=persistent;backup
 
 # IMEI and modem related
@@ -27,13 +27,14 @@
 /nvram			emmc		/dev/block/by-name/nvram										flags=display=nvram;backup
 
 # Standard MediaTeks's partitions
-/expdb			emmc		/dev/block/by-name/expdb										flags=display=expdb
-/logo			emmc		/dev/block/by-name/logo											flags=display=logo;slotselect;backup
+/flashinfo		emmc		/dev/block/by-name/flashinfo									flags=display="SP Flash Tool Log";backup;flashimg
+/expdb			emmc		/dev/block/by-name/expdb										flags=display="MTK Crash Log";backup;flashimg
+/logo			emmc		/dev/block/by-name/logo											flags=display="Boot Logo";backup;flashimg
 /otp			emmc		/dev/block/by-name/otp											flags=display=otp
 /seccfg			emmc		/dev/block/by-name/seccfg										flags=display=seccfg
 /spmfw			emmc		/dev/block/by-name/spmfw										flags=display=spmfw;slotselect
-/tee1			emmc		/dev/block/by-name/tee1											flags=display=tee1
-/tee2			emmc		/dev/block/by-name/tee2											flags=display=tee2
+/tee_a			emmc		/dev/block/by-name/tee_a										flags=display="TEE Slot A";backup
+/tee_b			emmc		/dev/block/by-name/tee_b										flags=display="TEE Slot B";backup
 
 # Removable Storage
 /external_sd		auto		/dev/block/mmcblk1p1				/dev/block/mmcblk0p1					flags=display="Micro SD Card";storage;wipeingui;removable;backup=0
@@ -42,6 +43,7 @@
 # Flashable logical partitions
 /system_image		emmc		/dev/block/bootdevice/by-name/system									flags=backup;flashimg
 /vendor_image		emmc		/dev/block/bootdevice/by-name/vendor									flags=backup;flashimg
-/system_ext_image	emmc		/dev/block/bootdevice/by-name/system_ext								flags=display="System_EXT Image";backup;flashimg
+/system_ext_image	emmc		/dev/block/bootdevice/by-name/system_ext								flags=display="System Ext Image";backup;flashimg
 /product_image		emmc		/dev/block/bootdevice/by-name/product									flags=display="Product Image";backup;flashimg
-/vendor_dlkm_image	emmc		/dev/block/bootdevice/by-name/vendor_dlkm								flags=display="VendorDLKM Image";backup;flashimg
+/vendor_dlkm_image	emmc		/dev/block/bootdevice/by-name/vendor_dlkm								flags=display="Vendor DLKM Image";backup;flashimg
+/odm_dlkm_image	    emmc		/dev/block/bootdevice/by-name/odm_dlkm								    flags=display="ODM DLKM Image";backup;flashimg
