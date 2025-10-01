@@ -35,6 +35,9 @@ on post-fs
 on boot
     start mtk.plpath.utils.link
 
+    # Enable DT2W on boot
+    write /sys/devices/platform/common_node/gesture 1
+
 on property:persist.vendor.mtk.pl_lnk=1
     symlink /dev/block/mapper/pl_a /dev/block/by-name/preloader_raw_a
     symlink /dev/block/mapper/pl_b /dev/block/by-name/preloader_raw_b
