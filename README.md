@@ -1,24 +1,24 @@
-## TECNO POVA 6 4G (_LI7_)
-## TWRP / OrangeFox device tree
+## ADVAN X1 (_6781_)
+## Recovery device tree (TWRP, PBRP, OrangeFox, SHRP)
 
 ## Device specifications
 
-Device                  | TECNO POVA 6 4G
+Device                  | ADVAN X1
 -----------------------:|:-----------------------------------------
-SoC                     | Mediatek Helio G99 Ultimate (6 nm)
+SoC                     | Mediatek Helio G100 Ultimate (6 nm)
 CPU                     | Octa-core (2x2.2 GHz Cortex-A76 & 6x2.0 GHz Cortex-A55)
 GPU                     | Mali-G57 MC2
-Memory                  | 8/12 GB RAM
-Storage                 | 256 GB (UFS 2.2)
-MicroSD                 | no
+Memory                  | 8 GB RAM
+Storage                 | 128 GB (UFS 2.2)
+MicroSD                 | microSDXC (dedicated slot)
 Shipped Android Version | 14.0
-Battery                 | Non-removable 6000 mAh
-Display                 | 1080 x 2460 pixels (~396 ppi density), 6.78 inches
-Camera                  | 108 MP (wide); 32 MP (front, wide)
+Battery                 | Non-removable 5000 mAh
+Display                 | 1080 x 2460 pixels (~396 ppi density), 6.78 inches, 120hz
+Camera                  | 64 MP Sony-IMX782; 5 MP (front)
 
 ## Device picture
 
-![ TECNO POVA 6 4G ](https://fdn2.gsmarena.com/vv/pics/tecno/tecno-pova-6-01.jpg "TECNO POVA 6 4G")
+![ ADVAN X1 ](https://i0.wp.com/advandigital.com/wp-content/uploads/2025/07/Background.png?w=752&ssl=1 "ADVAN X1")
 
 ## Features
 
@@ -35,9 +35,16 @@ Works:
 - [ ] Vibrator
 
 ## Building
-
+### TWRP, PBRP
 _Lunch_ command :
 
 ```
-lunch twrp_LI7-eng && mka adbd vendorbootimage
+lunch twrp_ADVAN_X1-eng && mka vendorbootimage
+```
+
+### SHRP, OrangeFox
+_Lunch_ command :
+
+```
+lunch twrp_ADVAN_X1-eng && mka adbd vendorbootimage
 ```

@@ -24,11 +24,11 @@ void vendor_load_properties()
     string prop_partitions[] = {"", "vendor.", "odm."};
     for (const string &prop : prop_partitions)
     {
-        property_override(string("ro.product.") + prop + string("brand"), "TECNO");
-        property_override(string("ro.product.") + prop + string("name"), "LI7-OP");
-        property_override(string("ro.product.") + prop + string("device"), "TECNO-LI7");
-        property_override(string("ro.product.") + prop + string("model"), "TECNO LI7");
-        property_override(string("ro.product.") + prop + string("marketname"), "TECNO POVA 6");
-        property_override(string("ro.product.system.") + prop + string("device"), "TECNO POVA 6");
+        property_override(string("ro.product.") + prop + string("brand"), "ADVAN");
+        property_override(string("ro.product.") + prop + string("name"), "ADVAN_X1");
+        property_override(string("ro.product.") + prop + string("device"), "ADVAN_X1");
+        property_override(string("ro.product.") + prop + string("model"), "ADVAN_X1");
+        property_override(string("ro.product.") + prop + string("marketname"), "ADVAN X1");
+        property_override(string("ro.product.system.") + prop + string("device"), "ADVAN X1");
     }
 }
