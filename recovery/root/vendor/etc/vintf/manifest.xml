@@ -1,8 +1,5 @@
 <!--
     Input:
-        vendor.transsion.hardware.hyperion.hap_device.xml
-        manifest_tranlog.xml
-        manifest_tranlogconfig.xml
         manifest_sensor_hidl_v2.xml
         manifest_audio.xml
         manifest_dsds.xml
