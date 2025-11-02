@@ -25,10 +25,11 @@ void vendor_load_properties()
     for (const string &prop : prop_partitions)
     {
         property_override(string("ro.product.") + prop + string("brand"), "ADVAN");
-        property_override(string("ro.product.") + prop + string("name"), "ADVAN_X1");
-        property_override(string("ro.product.") + prop + string("device"), "ADVAN_X1");
-        property_override(string("ro.product.") + prop + string("model"), "ADVAN_X1");
-        property_override(string("ro.product.") + prop + string("marketname"), "ADVAN X1");
-        property_override(string("ro.product.system.") + prop + string("device"), "ADVAN X1");
+        property_override(string("ro.product.") + prop + string("manufacturer"), "ADVAN");
+        property_override(string("ro.product.") + prop + string("name"), "ADVAN_TAB_V8");
+        property_override(string("ro.product.") + prop + string("device"), "ADVAN_TAB_V8");
+        property_override(string("ro.product.") + prop + string("model"), "8004");
+        property_override(string("ro.product.") + prop + string("marketname"), "ADVAN TAB V8");
+        property_override(string("ro.product.system.") + prop + string("device"), "ADVAN_TAB_V8");
     }
 }
