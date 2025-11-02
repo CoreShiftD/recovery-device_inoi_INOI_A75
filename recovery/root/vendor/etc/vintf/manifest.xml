@@ -9,7 +9,6 @@
         nfc_manifest.xml
         manifest_secure_element_dsds.xml
         manifest_tee.xml
-        manifest_trustonic.xml
         manifest_log.xml
         manifest_mdmonitor.xml
         manifest_aee.xml
@@ -533,46 +532,6 @@
             <instance>default</instance>
         </interface>
         <fqname>@1.0::IVideoTelephony/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.nxp.nxpnfc</name>
-        <transport>hwbinder</transport>
-        <version>2.0</version>
-        <interface>
-            <name>INxpNfc</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@2.0::INxpNfc/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.nxp.nxpnfclegacy</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>INxpNfcLegacy</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.0::INxpNfcLegacy/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.trustonic.tee</name>
-        <transport>hwbinder</transport>
-        <version>1.1</version>
-        <interface>
-            <name>ITee</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.1::ITee/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.trustonic.tee.tui</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>ITui</name>
-            <instance>default</instance>
-        </interface>
-        <fqname>@1.0::ITui/default</fqname>
     </hal>
     <sepolicy>
         <version>31.0</version>
