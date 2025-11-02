@@ -154,7 +154,7 @@ TARGET_USES_MKE2FS := true
 TW_MAX_BRIGHTNESS := 255
 TW_LOAD_VENDOR_BOOT_MODULES := true
 TW_DEVICE_VERSION := ADVAN_TAB_V8 v1.0
-TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone31/temp
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone28/temp
 
 # StatusBar
 TW_STATUS_ICONS_ALIGN := center
