@@ -1,0 +1,6 @@
+
+on boot
+    # Enable DT2W on boot
+    write /proc/android_touch/SMWP 1
+    write /proc/android_touch/GESTURE 1
+    write /sys/devices/platform/soc/1100a000.spi0/spi_master/spi0/spi0.1/ts_gesture 1
