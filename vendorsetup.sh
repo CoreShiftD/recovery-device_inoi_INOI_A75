@@ -19,7 +19,7 @@
 #
 
 #set -o xtrace
-FDEVICE="ADVAN_TAB_V8"
+FDEVICE="INOI_A75"
 
 fetch_mt6789_common_repo() {
 	local URL=https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git

@@ -5,7 +5,7 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/twrp_ADVAN_TAB_V8.mk
+    $(LOCAL_DIR)/twrp_INOI_A75.mk
 
 COMMON_LUNCH_CHOICES := \
-    twrp_ADVAN_TAB_V8-eng
+    twrp_INOI_A75-eng

@@ -6,7 +6,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE), ADVAN_TAB_V8)
+ifeq ($(TARGET_DEVICE), INOI_A75)
 
 include $(call all-subdir-makefiles,$(LOCAL_PATH))
 
