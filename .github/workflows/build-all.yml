@@ -1,22 +1,15 @@
-name: Build Multi‑Recovery INOI A75 with Artifact
+name: Build and Release All Recoveries INOI A75
 
 on:
   workflow_dispatch:
-    inputs:
-      recovery_type:
-        description: "Select recovery to build"
-        required: true
-        default: "twrp"
-        type: choice
-        options:
-          - twrp
-          - pbrp
-          - shrp
-          - ofox
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        recovery: [twrp, pbrp, shrp, ofox]
 
     steps:
       - name: Checkout device tree
@@ -49,13 +42,13 @@ jobs:
           chmod +x repo
           sudo mv repo /usr/local/bin/
 
-      - name: Build recovery
+      - name: Build ${{ matrix.recovery }}
         run: |
           set -e
 
           DEVICE_CODENAME="INOI_A75"
           DEVICE_DIR="device/inoi/$DEVICE_CODENAME"
-          RECOVERY="${{ github.event.inputs.recovery_type }}"
+          RECOVERY="${{ matrix.recovery }}"
           WORKSPACE="$GITHUB_WORKSPACE/rec_src"
 
           mkdir -p "$WORKSPACE"
@@ -65,6 +58,10 @@ jobs:
             cd "$GITHUB_WORKSPACE/ofox_sync"
             ./orangefox_sync.sh --branch 12.1 --path "$WORKSPACE"
             cd "$WORKSPACE"
+
+            mkdir -p "$DEVICE_DIR"
+            rsync -av --exclude='.git' --exclude='.github' \
+              "$GITHUB_WORKSPACE/device_tree/" "$DEVICE_DIR/"
 
           else
             cd "$WORKSPACE"
@@ -88,12 +85,11 @@ jobs:
             esac
 
             repo sync -c -j$(nproc) --no-tags --no-clone-bundle --force-sync
-          fi
 
-          # Place device tree after sync in all cases
-          mkdir -p "$DEVICE_DIR"
-          rsync -av --exclude='.git' --exclude='.github' \
-            "$GITHUB_WORKSPACE/device_tree/" "$DEVICE_DIR/"
+            mkdir -p "$DEVICE_DIR"
+            rsync -av --exclude='.git' --exclude='.github' \
+              "$GITHUB_WORKSPACE/device_tree/" "$DEVICE_DIR/"
+          fi
 
           export ALLOW_MISSING_DEPENDENCIES=true
           . build/envsetup.sh
@@ -117,8 +113,41 @@ jobs:
               ;;
           esac
 
-      - name: Upload recovery artifact
+          if ls out/target/product/${DEVICE_CODENAME}/*.img 1>/dev/null 2>&1; then
+            mkdir -p "$GITHUB_WORKSPACE/artifacts"
+            cp out/target/product/${DEVICE_CODENAME}/*.img "$GITHUB_WORKSPACE/artifacts/"
+          else
+            echo "No images produced for $RECOVERY"
+            exit 1
+          fi
+
+      - name: Upload artifact
+        if: hashFiles('artifacts/*.img') != ''
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.inputs.recovery_type }}-recovery
-          path: rec_src/out/target/product/INOI_A75/*.img
+          name: ${{ matrix.recovery }}-recovery
+          path: artifacts/*.img
+
+  collect_release:
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    steps:
+      - name: Set release tag
+        id: tag
+        run: echo "tag=recovery-$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all_recoveries
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: "INOI A75 Recoveries ${{ steps.tag.outputs.tag }}"
+          body: "Automated release — failed recoveries are omitted."
+          files: all_recoveries/**/*.img
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
