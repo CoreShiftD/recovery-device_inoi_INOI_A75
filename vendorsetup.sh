@@ -19,31 +19,37 @@
 #
 
 #set -o xtrace
+#!/bin/bash
+
 FDEVICE="INOI_A75"
 
 fetch_mt6789_common_repo() {
-	local URL=https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git
-	local common=device/alldocube/mt6789-common
-	if [ ! -d $common ]; then
-		echo "Cloning $URL ... to $common"
-		git clone $URL -b twrp-12.1 $common
-	else
-		echo "Device common repository: \"$common\" found ..."
-	fi
+    local URL=https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git
+    local common=device/alldocube/mt6789-common
+    if [ ! -d $common ]; then
+        echo "Cloning $URL ... to $common"
+        git clone $URL -b twrp-12.1 $common
+    else
+        echo "Device common repository: \"$common\" found ..."
+    fi
 }
 
-# Clone to fix build on minimal manifest
-git clone https://android.googlesource.com/platform/external/gflags/ -b android-12.1.0_r4 external/gflags
+# Clone gflags only if missing
+if [ ! -d external/gflags ]; then
+    git clone https://android.googlesource.com/platform/external/gflags/ -b android-12.1.0_r4 external/gflags
+else
+    echo "external/gflags already exists, skipping clone."
+fi
 
-# mt6789-common
+# Clone mt6789-common if missing
 fetch_mt6789_common_repo
 
-# ccache
+# Setup ccache
 export USE_CCACHE=1
 export CCACHE_EXEC=/usr/bin/ccache
 export CCACHE_MAXSIZE="10G"
 export CCACHE_DIR=".ccache"
 
 if [ ! -d ${CCACHE_DIR} ]; then
-	mkdir $CCACHE_DIR
+    mkdir $CCACHE_DIR
 fi
