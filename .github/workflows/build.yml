@@ -1,0 +1,103 @@
+name: Manual Build Multi‑Recovery INOI A75
+
+on:
+  workflow_dispatch:
+    inputs:
+      recovery_type:
+        description: "Select recovery to build"
+        required: true
+        default: "twrp"
+        type: choice
+        options:
+          - twrp
+          - pbrp
+          - shrp
+          - ofox
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout device tree repo
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y bc build-essential curl python3 openjdk-11-jdk
+
+      - name: Setup 24GB swap and check disk
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo dd if=/dev/zero of=/swapfile bs=1G count=24 status=progress
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+          echo "=== Free memory and disk ==="
+          free -h
+          df -h .
+
+      - name: Install repo tool
+        run: |
+          curl https://storage.googleapis.com/git-repo-downloads/repo -o repo
+          chmod +x repo
+          sudo mv repo /usr/local/bin/
+
+      - name: Initialize recovery source
+        run: |
+          mkdir rec_src
+          cd rec_src
+
+          case "${{ github.event.inputs.recovery_type }}" in
+            twrp)
+              repo init --depth=1 -u  https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1
+              ;;
+            pbrp)
+              repo init --depth=1 -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-12.1
+              ;;
+            shrp)
+              repo init --depth=1 -u https://github.com/SHRP/manifest -b shrp-12.1
+              ;;
+            ofox)
+              git clone --depth=1 https://gitlab.com/OrangeFox/sync.git orangefox_sync
+              cd orangefox_sync
+              ./orangefox_sync.sh --branch 12.1 --path ../
+              cd ..
+              ;;
+          esac
+
+          repo sync -c -j$(nproc)
+
+      - name: Copy INOI A75 device tree
+        run: |
+          DEVICE_DIR="device/inoi/INOI_A75"
+          mkdir -p rec_src/$DEVICE_DIR
+          # Copy only relevant files, avoid copying rec_src itself
+          rsync -av --exclude='rec_src' --exclude='.git' ./ rec_src/$DEVICE_DIR/
+
+      - name: Build recovery
+        run: |
+          cd rec_src
+          export ALLOW_MISSING_DEPENDENCIES=true
+          . build/envsetup.sh
+
+          case "${{ github.event.inputs.recovery_type }}" in
+            twrp)
+              lunch twrp_INOI_A75-eng
+              mka vendorbootimage
+              ;;
+            pbrp)
+              lunch pb_INOI_A75-eng
+              mka pbrp
+              ;;
+            shrp)
+              lunch shrp_INOI_A75-eng
+              mka adbd vendorbootimage
+              ;;
+            ofox)
+              lunch twrp_INOI_A75-eng
+              mka adbd vendorbootimage
+              ;;
+          esac
