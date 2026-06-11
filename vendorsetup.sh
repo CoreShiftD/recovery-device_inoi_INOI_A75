@@ -24,32 +24,44 @@
 FDEVICE="INOI_A75"
 
 fetch_mt6789_common_repo() {
-    local URL=https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git
-    local common=device/alldocube/mt6789-common
-    if [ ! -d $common ]; then
-        echo "Cloning $URL ... to $common"
-        git clone $URL -b twrp-12.1 $common
-    else
-        echo "Device common repository: \"$common\" found ..."
+    local URL="https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git"
+    local BRANCH="twrp-12.1"
+    local COMMON="device/alldocube/mt6789-common"
+
+    echo "Current directory:"
+    pwd
+
+    echo "Checking parent directory..."
+    mkdir -p "$(dirname "$COMMON")"
+
+    if [ -e "$COMMON" ] && [ ! -d "$COMMON" ]; then
+        echo "ERROR: $COMMON exists but is not a directory"
+        ls -l "$COMMON"
+        exit 1
     fi
+
+    if [ -d "$COMMON/.git" ]; then
+        echo "Common tree already exists: $COMMON"
+        return 0
+    fi
+
+    rm -rf "$COMMON"
+
+    echo "Cloning $URL ($BRANCH) -> $COMMON"
+    git clone --depth=1 -b "$BRANCH" "$URL" "$COMMON"
+
+    echo "Clone completed"
+    ls -la "$COMMON"
 }
 
-# Clone gflags only if missing
-if [ ! -d external/gflags ]; then
-    git clone https://android.googlesource.com/platform/external/gflags/ -b android-12.1.0_r4 external/gflags
+if [ ! -d external/gflags/.git ]; then
+    mkdir -p external
+    git clone \
+        https://android.googlesource.com/platform/external/gflags/ \
+        -b android-12.1.0_r4 \
+        external/gflags
 else
-    echo "external/gflags already exists, skipping clone."
+    echo "external/gflags already exists"
 fi
 
-# Clone mt6789-common if missing
 fetch_mt6789_common_repo
-
-# Setup ccache
-export USE_CCACHE=1
-export CCACHE_EXEC=/usr/bin/ccache
-export CCACHE_MAXSIZE="10G"
-export CCACHE_DIR=".ccache"
-
-if [ ! -d ${CCACHE_DIR} ]; then
-    mkdir $CCACHE_DIR
-fi

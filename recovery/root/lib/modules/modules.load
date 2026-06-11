@@ -105,6 +105,7 @@ mt6789_dcm.ko
 mtk_dcm.ko
 clk-chk-mt6789.ko
 spi-mt65xx.ko
+focaltech_tp.ko
 mt6375.ko
 extdev_io_class.ko
 clkbuf.ko
