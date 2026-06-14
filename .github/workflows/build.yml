@@ -51,7 +51,7 @@ jobs:
 
       - name: Build recovery
         run: |
-          set -e
+          set +e
 
           DEVICE_CODENAME="INOI_A75"
           DEVICE_DIR="device/inoi/$DEVICE_CODENAME"
@@ -82,7 +82,7 @@ jobs:
                 ;;
               shrp)
                 repo init --depth=1 \
-                  -u https://github.com/SHRP/manifest \
+                  -u https://github.com/SHRP-Reborn/manifest \
                   -b shrp-12.1
                 ;;
             esac

@@ -24,7 +24,7 @@
 FDEVICE="INOI_A75"
 
 fetch_mt6789_common_repo() {
-    local URL="https://github.com/idabgsram/recovery-device_alldocube_mt6789-common.git"
+    local URL="https://github.com/tommynok/recovery-device_alldocube_mt6789-common.git"
     local BRANCH="twrp-12.1"
     local COMMON="device/alldocube/mt6789-common"
 
